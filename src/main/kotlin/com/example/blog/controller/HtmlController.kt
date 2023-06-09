@@ -5,7 +5,6 @@ import com.example.blog.entity.Article
 import com.example.blog.entity.RenderedArticle
 import com.example.blog.format
 import com.example.blog.repository.ArticleRepository
-import com.example.blog.repository.UserRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -16,15 +15,14 @@ import org.springframework.web.server.ResponseStatusException
 
 @Controller
 class HtmlController(
-    private val articleRepository: ArticleRepository,
-    private val properties: BlogProperties
+    private val articleRepository: ArticleRepository, private val properties: BlogProperties
 ) {
 
     @GetMapping("/")
     fun blog(model: Model): String {
         model["title"] = properties.title
         model["banner"] = properties.banner
-        model["article"] = articleRepository.findAllByOrderByAddedAtDesc().map {
+        model["articles"] = articleRepository.findAllByOrderByAddedAtDesc().map {
             it.render()
         }
         return "blog"
@@ -32,10 +30,10 @@ class HtmlController(
 
     @GetMapping("/article/{slug}")
     fun article(@PathVariable slug: String, model: Model): String {
-        val article = articleRepository
-            .findBySlug(slug)
-            ?.render()
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "This article does not exists")
+        val article = articleRepository.findBySlug(slug)?.render() ?: throw ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "This article does not exists"
+        )
         model["title"] = article.title
         model["article"] = article
         return "article"
@@ -43,11 +41,6 @@ class HtmlController(
     }
 
     fun Article.render() = RenderedArticle(
-        slug,
-        title,
-        headline,
-        content,
-        author,
-        addedAt.format()
+        slug, title, headline, content, author, addedAt.format()
     )
 }

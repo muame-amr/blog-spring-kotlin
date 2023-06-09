@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException
 class ArticleController(private val articleRepository: ArticleRepository) {
 
     @GetMapping("/")
-    fun findAll() = articleRepository.findAll()
+    fun findAll() = articleRepository.findAllByOrderByAddedAtDesc()
 
     @GetMapping("/{slug}")
     fun findOne(@PathVariable slug: String) =

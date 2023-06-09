@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
@@ -30,7 +29,7 @@ class HttpControllersTests(@Autowired val mockMvc: MockMvc) {
         val lorem5Article = Article("Lorem", "Lorem", "Ipsum Dolor Sit", johnDoe)
         val ipsumArticle = Article("Ipsum", "Ipsum", "Dolor Sit Amet", johnDoe)
         every { articleRepository.findAllByOrderByAddedAtDesc() } returns listOf(lorem5Article, ipsumArticle)
-        mockMvc.perform(get("/api/article").accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/article/").accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("\$.[0].author.login").value(johnDoe.login))

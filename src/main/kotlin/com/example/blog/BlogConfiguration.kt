@@ -19,14 +19,14 @@ class BlogConfiguration {
         val johnDoe = userRepository.save(User("johnDoe", "John", "Doe"))
         articleRepository.save(Article(
             title = "Lorem",
-            headline = "Ipsum",
-            content = "Dolor Sit Amet",
+            headline = "Lorem",
+            content = "Ipsum Dolor Sit",
             author = johnDoe
         ))
         articleRepository.save(Article(
             title = "Ipsum",
-            headline = "Lorem",
-            content = "consectetur adipiscing elit",
+            headline = "Ipsum",
+            content = "Dolor Sit Amet",
             author = johnDoe
         ))
     }
